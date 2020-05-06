@@ -26,7 +26,7 @@ for i in range(length):
 	data[i] = pd.Series(col)
 
 for i in range (length-1, 863659-1):
-	if (1517635237000<=df["timestamp"].values[i]<(1517635259000) or 1517643560000<=df["timestamp"].values[i]<(1517643585000) or 1517646987000<=df["timestamp"].values[i]<(1517647012000) or 1517647064000<=df["timestamp"].values[i]<(1517647080000) or 1517647657000<=df["timestamp"].values[i]<(1517647683000) or 1517659150000<=df["timestamp"].values[i]<(1517659171000) or 1517682815000<=df["timestamp"].values[i]<(1517682837000) or 1517683692000<=df["timestamp"].values[i]<(1517683713000) or 1517686866000<=df["timestamp"].values[i]<(1517686878000) or 1517687212000<=df["timestamp"].values[i]<(1517687233000) or 1517703734000<=df["timestamp"].values[i]<(1517703770000)):
+	if (1517635237000+length*4<df["timestamp"].values[i]<=(1517635259000) or 1517643560000+length*4<df["timestamp"].values[i]<=(1517643585000) or 1517646987000+length*4<df["timestamp"].values[i]<=(1517647012000) or 1517647064000+length*4<df["timestamp"].values[i]<=(1517647080000) or 1517647657000+length*4<df["timestamp"].values[i]<=(1517647683000) or 1517659150000+length*4<df["timestamp"].values[i]<=(1517659171000) or 1517682815000+length*4<df["timestamp"].values[i]<=(1517682837000) or 1517683692000+length*4<df["timestamp"].values[i]<=(1517683713000) or 1517686866000+length*4<df["timestamp"].values[i]<=(1517686878000) or 1517687212000+length*4<df["timestamp"].values[i]<=(1517687233000) or 1517703734000+length*4<df["timestamp"].values[i]<=(1517703770000)):
 		class.append(1)
 	else:
 		class.append(0)
@@ -46,7 +46,7 @@ for i in range (len(df.Classification)):
 		ones_count+=1
 
 
-while (count <int(ones_count/40*60)):
+while (count <=int(ones_count/40*60)):
 	value = randint(0, len(df.Classification))
 	if not (value in added_indices):
 		df2 = df2.append(df.iloc[value],ignore_index=True)
