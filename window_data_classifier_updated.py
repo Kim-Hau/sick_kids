@@ -17,21 +17,21 @@ df = pd.read_csv("2018_02_03_o0_l3751_h100.csv", names = ["timestamp", "DTW Dist
 #863659 values
 
 col = list()
-class = list()
+true_class = list()
 data = dict()
-length = 1000
+length = 100
 
 for i in range(length):
 	col=list( df.iloc[i:i+863659-length,1])
 	data[i] = pd.Series(col)
 
-for i in range (length-1, 863659-1):
+for i in range (length-1, 863659):
 	if (1517635237000+length*4<df["timestamp"].values[i]<=(1517635259000) or 1517643560000+length*4<df["timestamp"].values[i]<=(1517643585000) or 1517646987000+length*4<df["timestamp"].values[i]<=(1517647012000) or 1517647064000+length*4<df["timestamp"].values[i]<=(1517647080000) or 1517647657000+length*4<df["timestamp"].values[i]<=(1517647683000) or 1517659150000+length*4<df["timestamp"].values[i]<=(1517659171000) or 1517682815000+length*4<df["timestamp"].values[i]<=(1517682837000) or 1517683692000+length*4<df["timestamp"].values[i]<=(1517683713000) or 1517686866000+length*4<df["timestamp"].values[i]<=(1517686878000) or 1517687212000+length*4<df["timestamp"].values[i]<=(1517687233000) or 1517703734000+length*4<df["timestamp"].values[i]<=(1517703770000)):
-		class.append(1)
+		true_class.append(1)
 	else:
-		class.append(0)
+		true_class.append(0)
 
-data["Classification"] = pd.Series(class)
+data["Classification"] = pd.Series(true_class)
 
 df = pd.DataFrame(data)
 #df2.to_csv("windows.csv", index = False)
@@ -39,12 +39,12 @@ df = pd.DataFrame(data)
 added_indices = list()
 ones_count = 0
 df2 = pd.DataFrame(columns = df.columns)
+
 for i in range (len(df.Classification)):
 	if df.at[i, "Classification"]==1:
 		df2 = df2.append(df.iloc[i],ignore_index=True)
 		added_indices.append(i)
 		ones_count+=1
-
 
 while (count <=int(ones_count/40*60)):
 	value = randint(0, len(df.Classification))
@@ -64,6 +64,8 @@ x_test = df.drop('Classification', axis=1)
 y_test = df.Classification
 y_test=y_test.astype('int')
 
+prediction = list()
+classif = list()
 
 logistic_regression = LogisticRegression(max_iter=15)
 logistic_regression.fit(x_train, y_train)
@@ -78,13 +80,28 @@ pred_y = list(y_pred)
 for i in range (len(pred_y)):
 	if pred_y[i] == 1 and test_y[i] == 0:
 		false_positives+=1
+		prediction.append(-1)
+		classif.append("fp")
 	if pred_y[i] == 0 and test_y[i] == 1:
 		false_negatives+=1
+		prediction.append(-1)
+		classif.append("fn")
 	if pred_y[i] == 0 and test_y[i] == 0:
 		true_neg+=1
+		prediction.append(0)
+		classif.append("tn")
 	if pred_y[i] == 1 and test_y[i] == 1:
 		true_pos+=1
+		prediction.append(0)
+		classif.append("tp")
 
+class_pred = dict()
+class_pred["True_Class"] = pd.Series(true_class)
+class_pred ["Pred_Class"] = pd.Series(pred_y)
+class_pred["Pred_Type"] = pd.Series(classif)
+class_pred["Hit_Miss"] = pd.Series(prediction)
+df3 = pd.DataFrame(class_pred)
+df3.to_csv(length+"predictions.csv", index = True)
 
 print ("False +: "+str(false_positives))
 print ("False -: "+str(false_negatives))
