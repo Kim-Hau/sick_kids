@@ -22,7 +22,8 @@ flag = 1
 
 for i in range (windows_length-1, len(df.timestamp)-1):
     if 154404-windows_length<= i <= 157154 or 1194363-windows_length <= i <= 1197488 or 1622530-windows_length <= i <= 1625655 or 1632155-windows_length <= i <= 1634155 or 1706280-windows_length <= i <= 1709530 or 3142281-windows_length <= i <= 3144906 or 6099075-windows_length <= i <= 6101825 or 6208700-windows_length <= i <= 6211325 or 6605242-windows_length <= i <= 6606742 or 6648492-windows_length <= i <= 6651117 or 8712702-windows_length <= i <= 8717202:
-        classification.append(1)
+        
+	  classification.append(1)
         if classification[len(classification)-2] == 0:
             start_classif.append(df.timestamp[i-1])
     else:
